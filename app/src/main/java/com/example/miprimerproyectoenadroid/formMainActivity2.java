@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class formMainActivity2 extends AppCompatActivity {
 
@@ -17,29 +20,30 @@ public class formMainActivity2 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_form_main2);
 
-        // Referencias a los elementos
-        TextView textResumen = findViewById(R.id.textResumen);
-        Button btnVolver = findViewById(R.id.btnVolver);
+        TextView resumen = findViewById(R.id.textoResumen);
+        Button volver = findViewById(R.id.btnVolver);
 
-        // Obtener los datos enviados desde MainActivity
-        Intent intent = getIntent();
-        String nombre = intent.getStringExtra("nombre");
-        String edad = intent.getStringExtra("edad");
-        String ciudad = intent.getStringExtra("ciudad");
+        // Recupera los datos del Intent
+        String nombre = getIntent().getStringExtra("nombre");
+        String edad = getIntent().getStringExtra("edad");
+        String ciudad = getIntent().getStringExtra("ciudad");
 
-        // Crear el mensaje
-        String mensaje = "Hola, " + nombre + ". Tienes " + edad +
-                " años y eres de " + ciudad + ", encantado de conocerte.";
-
-        // Mostrarlo en el TextView
-        textResumen.setText(mensaje);
+        // Muestra mensaje personalizado
+        resumen.setText("Hola, " + nombre + ". Tienes " + edad + " años y eres de " + ciudad + ". Encantado de conocerte.");
 
         // Botón para volver al formulario
-        btnVolver.setOnClickListener(new View.OnClickListener() {
+        volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Cierra esta Activity y regresa a MainActivity
+                Intent volverIntent = new Intent(formMainActivity2.this, MainActivity.class);
+                startActivity(volverIntent);
             }
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
     }
 }
